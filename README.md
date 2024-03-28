@@ -3,7 +3,7 @@ Utility functions wrapping node:fs APIs.
 
 ## mkdtempBreaker(prefix: string, minDiskSpace?: number): Promise\<string\>
 Circuit breaker wrapper around `node:fs/mkdtemp()` to ensure minimum disk space available.  Example usage:
-```
+```TypeScript
 import { mkdtempBreaker } from '@dsbunny/fs';
 
 let tmpdir: string;
