@@ -1,4 +1,5 @@
 // vim: tabstop=8 softtabstop=0 noexpandtab shiftwidth=8 nosmarttab
+// Wrapper around `mkdtemp()` with circuit breaker pattern.
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -15,6 +16,14 @@ const circuitBreakerOptions = {
 };
 export const mkdtempBreaker = new CircuitBreaker(mkdtemp, circuitBreakerOptions);
 
+/**
+ * Creates a unique temporary directory.
+ * @see {@link https://nodejs.org/api/fs.html#fspromisesmkdtempprefix-options} for more information.
+ * @param prefix - The prefix of the generated directory name.
+ * @param minDiskSpace - Minimum disk space required to create a temporary directory.
+ * @returns The created temporary directory path.
+ * @throws Error If the disk space is insufficient.
+ */
 async function mkdtemp(
 	prefix: string,
 	minDiskSpace?: number,

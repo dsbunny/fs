@@ -1,5 +1,6 @@
 "use strict";
 // vim: tabstop=8 softtabstop=0 noexpandtab shiftwidth=8 nosmarttab
+// Wrapper around `mkdtemp()` with circuit breaker pattern.
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -18,6 +19,14 @@ const circuitBreakerOptions = {
     volumeThreshold: 10,
 };
 exports.mkdtempBreaker = new opossum_1.default(mkdtemp, circuitBreakerOptions);
+/**
+ * Creates a unique temporary directory.
+ * @see {@link https://nodejs.org/api/fs.html#fspromisesmkdtempprefix-options} for more information.
+ * @param prefix - The prefix of the generated directory name.
+ * @param minDiskSpace - Minimum disk space required to create a temporary directory.
+ * @returns The created temporary directory path.
+ * @throws Error If the disk space is insufficient.
+ */
 async function mkdtemp(prefix, minDiskSpace) {
     const tmpdir = node_os_1.default.tmpdir();
     if (typeof minDiskSpace === 'number') {
